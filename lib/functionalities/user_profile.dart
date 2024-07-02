@@ -15,17 +15,20 @@ class userProfile extends StatefulWidget {
 class _userProfileState extends State<userProfile> {
   String employeeName="XXXXX XXXX";
   int employeeNo=0;
+  String deptCode="XXX";
 
   @override
   Widget build(BuildContext context) {
     void _loadEmployeeNameNo() async {
       String? name = await _storage.read(key: "Employee_Name");
+      String? dcode = await _storage.read(key: "Department_Code");
       String? numberString = await _storage.read(key: "Employee_Number");
       int? number = numberString != null ? int.tryParse(numberString) : null;
 
       if (name != null && number != null) {
         setState(() {
           employeeName = name;
+          deptCode= dcode!;
           employeeNo = number;
         });
       }
@@ -102,6 +105,7 @@ class _userProfileState extends State<userProfile> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Employee Number',style: txtsty,),
+                            Text('Department No.',style: txtsty,),
                             Text('Deignation',style: txtsty,)
                           ],
                         ),
@@ -111,6 +115,7 @@ class _userProfileState extends State<userProfile> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('${employeeNo}',style: txtsty,),
+                            Text('${deptCode}',style: txtsty,),
                             Text('Manager',style: txtsty,)
 
                           ],

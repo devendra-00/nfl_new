@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:nfl_new/functionalities/user_profile.dart';
-import 'package:nfl_new/functionalities/computer_complaint.dart';
+import 'package:nfl_new/functionalities/computercomplaint/computer_complaint.dart';
 
 
 import 'dataclasses/functionalities_listtile.dart';
+import 'functionalities/computercomplaint/computer_complaint_IT.dart';
+import 'functionalities/computercomplaint/computer_complaint_others.dart';
 import 'functionalities/salary_slip.dart';
 import 'login.dart';
 
@@ -20,17 +22,26 @@ class homeScrren extends StatefulWidget {
 
 class _homeScrrenState extends State<homeScrren> {
   String employeeName="XXXXX XXXX";
+  String employeeNumber="XXXX";
 
   String _searchQuery = '';
+
   @override
   Widget build(BuildContext context) {
     Future<String> _getEmployeeName = getEmployeeName();
+    Future<String> _getEmployeeNo = getEmployeeNo();
     _getEmployeeName.then((name) {
       setState(() {
         employeeName = name;
       });
     });
-    return Scaffold(
+    _getEmployeeNo.then((no) {
+      setState(() {
+        employeeNumber = no;
+      });
+    });
+
+      return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
@@ -196,11 +207,18 @@ class _homeScrrenState extends State<homeScrren> {
     }
     return name;
   }
+  Future<String> getEmployeeNo() async {
+    String? no = await _storage.read(key: 'Employee_Number');
+    if (no == null) {
+      no = 'XXX XXXXXXX'; // Default name if not found
+    }
+    return no;
+  }
 
 
   List<ListTileData> listTiles = [
     ListTileData('Financial Details', 'Earnings and Deductions',Icons.currency_rupee,SalarySlipScreen()),
-    ListTileData('Computer Complaint', 'Help from IT Department',Icons.desktop_windows_sharp,CompputerComplaintScreen()),
+    ListTileData('Computer Complaint', 'IT Department',Icons.desktop_windows_sharp,CompputerComplaintScreen()),
 
     // Add more list tile data here
   ];

@@ -15,6 +15,7 @@ class _LoginState extends State<Login> {
 
   TextEditingController empnocontroller=TextEditingController();
   TextEditingController namecontroller=TextEditingController();
+  TextEditingController deptnocontroller=TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,6 @@ class _LoginState extends State<Login> {
               TextField(
                 cursorColor: Colors.teal,
                 style: TextStyle(fontSize: 24),
-
                 controller: empnocontroller,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
@@ -53,7 +53,23 @@ class _LoginState extends State<Login> {
                 keyboardType: TextInputType.number,
                 maxLength: 5, // Assuming the employee number is 10 digits long
               ),
-
+              TextField(
+                cursorColor: Colors.teal,
+                style: TextStyle(fontSize: 24),
+                controller: deptnocontroller,
+                decoration: InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
+                  border: new OutlineInputBorder(
+                      borderSide: new BorderSide(color: Colors.teal)
+                  ),
+                  labelText: 'Department Code',
+                  labelStyle: TextStyle(color: Colors.black),
+                ),
+                keyboardType: TextInputType.number,
+                maxLength: 3,
+              ),
               TextField(
                 cursorColor: Colors.teal,
                 style: TextStyle(fontSize: 24),
@@ -69,6 +85,7 @@ class _LoginState extends State<Login> {
                   labelStyle: TextStyle(color: Colors.black),
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: Container(
@@ -105,9 +122,11 @@ class _LoginState extends State<Login> {
     final _storage = FlutterSecureStorage();
     String employeeName = namecontroller.text;
     int employeeNumber = int.parse(empnocontroller.text);
+    String departmentNumber=deptnocontroller.text;
 
     await _storage.write(key: "Employee_Name", value: employeeName);
     await _storage.write(key: "Employee_Number", value: employeeNumber.toString());
+    await _storage.write(key: "Department_Code", value: departmentNumber);
     await _storage.write(key: "LoggedIn", value: "true");
 
     Navigator.pushReplacement(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:nfl_new/dataclasses/colorconstants.dart';
+import '../dataclasses/salaryslip.dart';
 import '../server/salary_slip_api.dart';
 import 'package:krutidevtounicode/krutidevtounicode.dart';
 
@@ -63,29 +65,39 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.teal.shade50,
           title: const Text("Select Year"),
-          content: SizedBox(
+          content: Container(
+            color: Colors.teal.shade50,
             width: 300,
             height: 300,
-            child: YearPicker(
-              firstDate: DateTime(DateTime.now().year - 10, 1),
-              lastDate: DateTime(2025),
-              initialDate: DateTime.now(),
-              selectedDate: _selectedYear,
-              onChanged: (DateTime dateTime) {
-                setState(() {
-                  _selectedYear = dateTime;
-                  showYear = "${dateTime.year}";
-                });
-                Navigator.pop(context);
-                _selectMonth(context); // Call the month picker after selecting the year
-              },
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: Colors.grey.shade500, // Color of the selected year
+                  onPrimary: Colors.grey.shade100, // Text color of the selected year
+                ),
+              ),
+              child: YearPicker(
+                firstDate: DateTime(DateTime.now().year - 10, 1),
+                lastDate: DateTime(2025),
+                initialDate: DateTime.now(),
+                selectedDate: _selectedYear,
+                onChanged: (DateTime dateTime) {
+                  setState(() {
+                    _selectedYear = dateTime;
+                    showYear = "${dateTime.year}";
+                  });
+                  Navigator.pop(context);
+                  _selectMonth(context); // Call the month picker after selecting the year
+                },
+              ),
             ),
           ),
         );
       },
     );
-  } //Selects Year
+  }
 
   void _selectMonth(BuildContext context) {
     print("Calling date picker for month");
@@ -93,8 +105,10 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.teal.shade100,
           title: const Text("Select Month"),
-          content: SizedBox(
+          content: Container(
+            color: Colors.teal.shade100,
             width: 300,
             height: 300,
             child: GridView.builder(
@@ -119,12 +133,13 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
                     print("Selected Month: ${index + 1}");
                   },
                   child: Container(
+
                     alignment: Alignment.center,
                     margin: const EdgeInsets.all(4.0),
                     decoration: BoxDecoration(
                       color: _selectedMonth == index + 1
-                          ? Colors.blue
-                          : Colors.grey[200],
+                          ? Colors.grey[500]
+                          : Colors.grey[100],
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
@@ -207,13 +222,13 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
               }
                   : null,
               style: ButtonStyle(
-                overlayColor: MaterialStateProperty.all(Colors.teal),
-                elevation: MaterialStateProperty.all(0),
-                foregroundColor: MaterialStateProperty.all(Colors.teal),
-                backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                side: MaterialStateProperty.all(
+                overlayColor: WidgetStateProperty.all(Colors.teal),
+                elevation: WidgetStateProperty.all(0),
+                foregroundColor: WidgetStateProperty.all(Colors.teal),
+                backgroundColor: WidgetStateProperty.all(Colors.transparent),
+                side: WidgetStateProperty.all(
                     BorderSide(color: Colors.black26, width: 2)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(5)),
                   ),
@@ -267,7 +282,7 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
         builder: (context) {
           return DraggableScrollableSheet(
             expand: false,
-            initialChildSize: 1.0, // Set the initial height to 80% of the screen height
+            initialChildSize: 0.8, // Set the initial height to 80% of the screen height
             minChildSize: 0.5, // Minimum height
             maxChildSize: 1.0, // Maximum height
             builder: (BuildContext context, ScrollController scrollController) {
@@ -284,7 +299,7 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
 
-                                color: listED[index].earn_deduc=="E" ? Colors.teal.shade50 : Colors.red.shade100,
+                                color: listED[index].earn_deduc=="E" ? Colors.teal.shade100 : Colors.red.shade100,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
@@ -315,7 +330,7 @@ class _SalarySlipScreenState extends State<SalarySlipScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         gradient: LinearGradient(
-                            colors: [Colors.teal.shade100,Colors.grey.shade200, ],
+                            colors: [ColorConstants.Color_4,ColorConstants.Color_1, ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight
                         ),
